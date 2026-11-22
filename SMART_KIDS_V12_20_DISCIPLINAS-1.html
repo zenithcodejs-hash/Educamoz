@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#155eef">
+<title>SMART KIDS V12 — CS TECHNOLOGY</title>
+<style>
+:root{--blue:#155eef;--navy:#17345f;--sky:#eaf2ff;--ink:#183153;--muted:#61738f;--white:#fff;--green:#16834b;--gold:#f5b82e;--shadow:0 12px 32px #17345f18}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:linear-gradient(145deg,#eaf2ff,#f9fbff 55%,#fff7e7);font-family:system-ui,Arial,sans-serif;color:var(--ink)}
+header{background:linear-gradient(120deg,#155eef,#6538d9);color:white;padding:25px 16px 30px;text-align:center;border-radius:0 0 30px 30px;box-shadow:var(--shadow)}
+header h1{font-size:clamp(32px,8vw,46px);margin:0;letter-spacing:1.5px}
+header p{margin:6px 0 0;opacity:.95;font-weight:600}
+main{max-width:760px;margin:22px auto;padding:0 15px 35px}
+.welcome{text-align:center;padding:34px 22px;min-height:55vh;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.logo{font-size:clamp(64px,18vw,100px);margin:8px 0 14px}
+.welcome h2{font-size:clamp(27px,7vw,38px);margin:8px 0}
+.welcome .sub{max-width:430px}
+.welcome button{max-width:360px}
+.panel{background:#ffffffed;border:1px solid #e3ebfa;border-radius:24px;padding:21px;box-shadow:var(--shadow)}
+h2{margin:0 0 9px;color:var(--blue)}
+.sub{color:var(--muted);line-height:1.55}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:17px 0}
+.stat{background:var(--sky);border-radius:16px;padding:12px;text-align:center}
+.stat strong{display:block;font-size:22px;color:var(--blue)}
+.stat span{font-size:12px;color:var(--muted);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+button{font:inherit;font-weight:750;border:0;border-radius:15px;padding:14px;cursor:pointer;transition:transform .12s,filter .12s}
+button:active{transform:scale(.98)}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.subject{background:#f0f5ff;color:var(--navy);border:2px solid #dce8ff;min-height:94px}
+.subject:hover{filter:brightness(.98);transform:translateY(-2px)}
+.subject .emoji{display:block;font-size:28px;margin-bottom:5px}
+.primary{background:linear-gradient(100deg,var(--blue),#6538d9);color:white;width:100%;margin-top:12px}
+.secondary{background:#eaf1ff;color:var(--blue);width:100%;margin-top:10px}
+.option{display:block;width:100%;text-align:left;margin:10px 0;background:#f3f6fc;color:var(--ink);border:2px solid #e1e9f7}
+.option:disabled{opacity:1;cursor:default}
+.option.correct{background:#e6f8ee;border-color:#36a66c;color:#17653d}
+.option.wrong{background:#fff0f0;border-color:#d87979;color:#922d2d}
+.topline{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:14px;font-weight:750;margin-bottom:12px}
+.progress{height:10px;background:#e5edfb;border-radius:10px;overflow:hidden;margin:10px 0 18px}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),#7c4dff);transition:width .25s}
+.feedback{font-weight:750;min-height:26px;margin-top:12px;line-height:1.4}
+.hidden{display:none!important}
+.tools{display:flex;gap:10px;margin-top:14px}
+.tools button{flex:1}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.badge{background:#fff6d9;color:#815900;border:1px solid #f4df9d;padding:8px 10px;border-radius:999px;font-size:13px;font-weight:750}
+footer{text-align:center;color:#71829b;font-size:12px;padding:0 12px 25px}
+@media(max-width:430px){.panel{padding:17px}.grid{gap:9px}.subject{padding:12px 8px}.stats{gap:7px}.stat{padding:10px 5px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><h1>SMART KIDS</h1><p>APRENDER É DIVERTIDO! · CS TECHNOLOGY · VERSÃO 12</p></header>
+<main>
+<section id="intro" class="panel welcome">
+ <div class="logo" aria-hidden="true">🎓📚</div>
+ <h2>SMART KIDS</h2>
+ <p class="sub">CS TECHNOLOGY</p>
+ <p class="sub">Aprender é divertido! Prepara-te para descobrir, responder e conquistar taças.</p>
+ <button id="enterBtn" class="primary" type="button">CARREGAR PARA COMEÇAR</button>
+</section>
+<section id="playScreen" class="panel welcome hidden">
+ <div class="logo" aria-hidden="true">🌟🏆</div>
+ <h2>Bem-vindo ao SMART KIDS!</h2>
+ <p class="sub">Estás pronto para aprender e superar os níveis?</p>
+ <button id="playBtn" class="primary" type="button">▶ JOGAR</button>
+</section>
+<section id="home" class="panel hidden">
+<h2>Olá, pequeno estudante! 👋</h2>
+<p class="sub">Escolhe uma disciplina, responde às perguntas e ganha pontos. Aprende ao teu ritmo! Toca em “Sons” para testar o áudio.</p>
+<div class="stats">
+ <div class="stat"><strong id="totalPoints">0</strong><span>PONTOS TOTAIS</span></div>
+ <div class="stat"><strong id="rounds">0</strong><span>JOGOS TERMINADOS</span></div>
+ <div class="stat"><strong id="best">0/50</strong><span>MELHOR RESULTADO</span></div>
+</div>
+<h2 style="font-size:19px;margin-top:20px">Escolhe uma disciplina</h2>
+<div class="grid" id="subjects"></div>
+<h2 style="font-size:18px;margin-top:22px">As tuas conquistas 🏅</h2>
+<div class="badges" id="badges"><span class="sub">Termina um jogo para ganhar a tua primeira medalha!</span></div>
+<div class="tools">
+ <button class="secondary" id="soundBtn" type="button">🔊 Sons: ligados</button>
+ <button class="secondary" id="resetBtn" type="button">↻ Reiniciar progresso</button>
+</div>
+</section>
+
+<section id="quiz" class="panel hidden">
+ <div class="topline"><span id="subjectName">Disciplina</span><span id="score">Pontos: 0</span></div>
+ <div class="progress"><div id="bar"></div></div>
+ <div class="topline"><span id="count">Pergunta 1/5</span><span id="level">Nível 1</span></div>
+ <h2 id="question">Pergunta</h2>
+ <div id="answers"></div>
+ <div id="feedback" class="feedback" aria-live="polite"></div>
+ <button id="next" class="primary hidden" type="button">Próxima pergunta</button>
+ <button class="secondary" id="backHome" type="button">Voltar às disciplinas</button>
+</section>
+
+<section id="result" class="panel hidden">
+ <h2>Excelente esforço! 🌟</h2>
+ <p id="resultText" class="sub"></p>
+ <div class="stats">
+  <div class="stat"><strong id="finalScore">0</strong><span>PONTOS NESTE JOGO</span></div>
+  <div class="stat"><strong id="correctCount">0/5</strong><span>RESPOSTAS CERTAS</span></div>
+  <div class="stat"><strong id="newBadge">⭐</strong><span>CONQUISTA</span></div>
+ </div>
+ <button class="primary" id="again" type="button">Jogar novamente</button>
+ <button class="secondary" id="resultHome" type="button">Escolher outra disciplina</button>
+</section>
+</main>
+<footer>CS TECHNOLOGY © SMART KIDS · Aprende, pratica e diverte-te.</footer>
+<script>
+const data = {
+"Matemática":{icon:"🔢",q:[
+["Quanto é 36 ÷ 6?",["5","6","7","8"],1],
+["Qual é o resultado de 125 + 75?",["180","190","200","210"],2],
+["Quanto é 9 × 7?",["56","63","72","79"],1],
+["Qual fração representa metade?",["1/3","1/4","2/3","1/2"],3],
+["Quantos centímetros há em 1 metro?",["10","100","1000","50"],1],
+["Qual é o perímetro de um quadrado com lado de 4 cm?",["8 cm","12 cm","16 cm","20 cm"],2],
+["Quanto é 3²?",["6","9","12","18"],1],
+["Qual é o menor número?",["0,8","0,5","1,2","2"],1],
+["Quanto é 1 hora e meia em minutos?",["60","75","90","120"],2],
+["Se 5 cadernos custam 100 MT, quanto custa 1?",["10 MT","15 MT","20 MT","25 MT"],2]]},
+"Português":{icon:"📚",q:[
+["Na frase 'A menina canta', qual é o sujeito?",["A menina","canta","A","menina canta"],0],
+["Qual é o antónimo de 'alegre'?",["Feliz","Contente","Triste","Divertido"],2],
+["Qual palavra está no passado?",["Estudo","Estudarei","Estudei","Estudar"],2],
+["Qual destas palavras é um adjectivo?",["Rapidamente","Azul","Correr","Casa"],1],
+["Qual é a sílaba tónica de 'janela'?",["ja","ne","la","ja-ne"],1],
+["Qual é o diminutivo de 'casa'?",["Casarão","Casinha","Casario","Casota"],1],
+["Que tipo de frase é 'Fecha a porta, por favor.'?",["Interrogativa","Exclamativa","Imperativa","Declarativa"],2],
+["Qual é o colectivo de peixes?",["Enxame","Cardume","Matilha","Rebanho"],1],
+["Qual palavra completa: 'Nós ___ à escola.'",["vai","vou","vamos","vão"],2],
+["Qual é o sinónimo de 'rápido'?",["Lento","Veloz","Fraco","Pesado"],1]]},
+"Ciências":{icon:"🔬",q:[
+["Qual é o planeta em que vivemos?",["Marte","Terra","Vénus","Júpiter"],1],
+["Como se chama a mudança da água líquida para vapor?",["Congelação","Fusão","Evaporação","Condensação"],2],
+["Qual destes órgãos faz parte do sistema respiratório?",["Pulmão","Rim","Fígado","Intestino"],0],
+["Que alimento é uma fonte comum de proteínas?",["Feijão","Açúcar","Sal","Óleo"],0],
+["Qual é a função principal das folhas?",["Absorver água do solo","Produzir alimento para a planta","Segurar a planta no solo","Formar raízes"],1],
+["Que força atrai os objectos para a Terra?",["Magnetismo","Gravidade","Electricidade","Fricção"],1],
+["Qual destes materiais é atraído por um íman?",["Madeira","Plástico","Ferro","Papel"],2],
+["Que animais têm coluna vertebral?",["Invertebrados","Vertebrados","Insetos apenas","Moluscos"],1],
+["Qual é a função dos dentes?",["Bombear sangue","Mastigar alimentos","Ouvir sons","Produzir ar"],1],
+["A energia que recebemos do Sol chama-se energia…",["Solar","Sonora","Química","Nuclear"],0]]},
+"História":{icon:"🏛️",q:[
+["Como se chama o período anterior à invenção da escrita?",["Idade Moderna","Pré-História","Idade Contemporânea","Idade Média"],1],
+["Que instrumento antigo era usado para escrever em papel?",["Caneta","Teclado","Rato","Calculadora"],0],
+["Qual destes é um exemplo de fonte oral da História?",["Entrevista a uma pessoa idosa","Moeda antiga","Fotografia","Monumento"],0],
+["Em que data se celebra o Dia dos Heróis Moçambicanos?",["3 de Fevereiro","7 de Abril","1 de Maio","25 de Junho"],0],
+["Qual é a função de um museu histórico?",["Guardar e apresentar património","Vender alimentos","Prever o tempo","Ensinar a conduzir"],0],
+["Como se chama a linha do tempo que organiza acontecimentos?",["Cronologia","Geometria","Cartografia","Biografia"],0],
+["Qual destes é um património cultural?",["Dança tradicional","Chuva","Vento","Nuvem"],0],
+["Quem governava um reino, em muitos sistemas antigos?",["Rei ou rainha","Professor","Médico","Pescador"],0],
+["Qual é a utilidade de estudar História?",["Compreender o passado","Prever todos os acontecimentos","Medir a temperatura","Calcular distâncias"],0],
+["O documento que regista leis fundamentais de um país é a…",["Constituição","Receita","Carta pessoal","Factura"],0]]},
+"Geografia":{icon:"🌍",q:[
+["Qual é o nome da linha imaginária que divide a Terra em hemisférios Norte e Sul?",["Meridiano de Greenwich","Equador","Trópico de Capricórnio","Círculo Polar"],1],
+["Como se chama a representação reduzida da Terra em forma de esfera?",["Globo terrestre","Planta da casa","Rosa-dos-ventos","Gráfico"],0],
+["Qual é o clima característico de regiões muito quentes e com pouca chuva?",["Desértico","Polar","Frio de montanha","Temperado húmido"],0],
+["Que nome damos à água que cai das nuvens?",["Evaporação","Precipitação","Infiltração","Transpiração"],1],
+["Qual destes é um recurso natural?",["Água","Plástico fabricado","Televisão","Cimento"],0],
+["Em que direcção fica o pôr do Sol?",["Este","Oeste","Norte","Sul"],1],
+["Como se chama o conjunto de montanhas?",["Planície","Cordilheira","Vale","Ilha"],1],
+["Qual é a actividade de cultivar a terra?",["Agricultura","Mineração","Comércio","Turismo"],0],
+["O que é uma ilha?",["Terra rodeada de água","Terra muito alta","Rio pequeno","Deserto"],0],
+["Qual destes fenómenos pode causar cheias?",["Chuva intensa","Falta de vento","Tempo seco","Frio ligeiro"],0]]},
+"Inglês":{icon:"🔤",q:[
+["Choose the correct translation of 'maçã'.",["Orange","Apple","Banana","Grape"],1],
+["What is the opposite of 'big'?",["Small","Tall","Long","Fast"],0],
+["Complete: 'She ___ a student.'",["am","are","is","be"],2],
+["What is the plural of 'box'?",["Boxs","Boxes","Boxies","Box"],1],
+["What does 'Good afternoon' mean?",["Boa tarde","Bom dia","Boa noite","Até logo"],0],
+["Choose the correct colour for 'green'.",["Vermelho","Amarelo","Verde","Preto"],2],
+["How do you say 'segunda-feira' in English?",["Sunday","Monday","Friday","Tuesday"],1],
+["Complete: 'I ___ football.'",["likes","like","liking","liked"],1],
+["What does 'mother' mean?",["Pai","Irmão","Mãe","Avó"],2],
+["Which word is an animal?",["Chair","Tiger","Pencil","Window"],1]]}
+,"Física":{icon:"⚙️",q:[
+["Que instrumento mede a temperatura?",["Régua","Termómetro","Balança","Relógio"],1],
+["Qual é a unidade SI de força?",["Joule","Watt","Newton","Metro"],2],
+["A luz propaga-se, num meio homogéneo, em linha:",["Curva","Recta","Circular","Quebrada"],1],
+["Qual destes é uma fonte natural de luz?",["Espelho","Sol","Lua","Livro"],1],
+["Que instrumento mede a massa?",["Balança","Cronómetro","Termómetro","Proveta"],0],
+["A unidade SI de comprimento é:",["Litro","Metro","Quilograma","Segundo"],1],
+["O som precisa de quê para se propagar?",["Vácuo","Um meio material","Luz","Sombra"],1],
+["Qual é o estado físico do vapor de água?",["Sólido","Líquido","Gasoso","Metálico"],2],
+["A energia associada ao movimento chama-se:",["Cinética","Química","Nuclear","Luminosa"],0],
+["Qual destes materiais é bom condutor eléctrico?",["Borracha","Plástico","Cobre","Madeira"],2]]},
+"Química":{icon:"🧪",q:[
+["Qual é o símbolo químico da água?",["CO₂","H₂O","O₂","NaCl"],1],
+["Qual é o símbolo do oxigénio?",["O","Ox","Og","Oy"],0],
+["A água é uma substância:",["Simples","Composta","Metálica","Gasosa sempre"],1],
+["Qual destes é um metal?",["Ferro","Oxigénio","Enxofre","Carbono"],0],
+["Qual é o símbolo químico do hidrogénio?",["He","H","Hy","Hg"],1],
+["A passagem do líquido para o gasoso chama-se:",["Fusão","Solidificação","Vaporização","Condensação"],2],
+["Qual é a fórmula do dióxido de carbono?",["CO₂","H₂O","O₂","H₂"],0],
+["Uma mistura de água e sal é geralmente:",["Heterogénea","Homogénea","Um elemento","Um metal"],1],
+["Qual é o estado físico do gelo?",["Gasoso","Líquido","Sólido","Plasma"],2],
+["A ferrugem forma-se principalmente no:",["Ferro","Vidro","Ouro","Plástico"],0]]},
+"Biologia":{icon:"🧬",q:[
+["Qual é a unidade básica dos seres vivos?",["Órgão","Célula","Sistema","Tecido"],1],
+["Que parte da planta realiza grande parte da fotossíntese?",["Raiz","Folha","Flor","Semente"],1],
+["Como se chamam os animais que comem plantas?",["Carnívoros","Herbívoros","Omnívoros","Insetívoros"],1],
+["Qual órgão é responsável pela respiração humana?",["Pulmões","Rins","Estômago","Coração"],0],
+["Que grupo inclui cogumelos?",["Fungos","Peixes","Répteis","Aves"],0],
+["Qual é o maior órgão externo do corpo humano?",["Coração","Pele","Fígado","Pulmão"],1],
+["As plantas produzem alimento através da:",["Digestão","Fotossíntese","Respiração animal","Evaporação"],1],
+["Qual destes animais é vertebrado?",["Minhoca","Borboleta","Rã","Caracol"],2],
+["Que líquido transporta substâncias no corpo humano?",["Saliva","Sangue","Suor","Lágrima"],1],
+["Qual é a função principal das raízes?",["Absorver água e sais minerais","Produzir frutos","Atrair insectos","Formar sementes"],0]]},
+"Educação Visual":{icon:"🎨",q:[
+["Quais são as três cores primárias tradicionais?",["Verde, laranja e roxo","Vermelho, amarelo e azul","Preto, branco e cinzento","Rosa, verde e castanho"],1],
+["Que instrumento usamos para traçar círculos?",["Compasso","Régua","Esquadro","Borracha"],0],
+["O desenho é uma forma de:",["Expressão visual","Cálculo químico","Corrida","Medição de som"],0],
+["Qual elemento visual indica o contorno?",["Linha","Cheiro","Som","Sabor"],0],
+["Que cor resulta da mistura de azul e amarelo?",["Verde","Roxo","Laranja","Rosa"],0],
+["Qual material é usado para pintar?",["Pincel","Martelo","Chave","Alicate"],0],
+["A simetria significa que as partes são:",["Equilibradas em relação a um eixo","Sempre diferentes","Sem forma","Invisíveis"],0],
+["Qual destes é uma forma geométrica?",["Triângulo","Música","Cheiro","Vento"],0],
+["A textura representa como uma superfície:",["Parece ou se sente ao toque","Faz barulho","Tem sabor","Se movimenta"],0],
+["Que cor é normalmente obtida ao misturar vermelho e amarelo?",["Laranja","Verde","Azul","Violeta"],0]]},
+"Educação Física":{icon:"⚽",q:[
+["Qual é o principal objectivo do aquecimento?",["Preparar o corpo para a actividade","Terminar o jogo","Dormir","Evitar beber água"],0],
+["Quantos jogadores de uma equipa de futebol estão normalmente em campo?",["5","7","11"," incluida"],2],
+["Que capacidade ajuda a manter o equilíbrio?",["Coordenação","Audição","Paladar","Memória"],0],
+["O que devemos fazer depois do exercício?",["Recuperar e hidratar","Não descansar","Correr sem parar","Evitar água"],0],
+["Qual destes é um desporto colectivo?",["Futebol","Natação individual","Corrida individual","Salto em altura"],0],
+["Qual parte do corpo usamos para correr?",["Pernas","Orelhas","Cotovelos apenas","Dentes"],0],
+["O fair play significa:",["Respeito pelas regras e adversários","Ganhar a qualquer custo","Fazer batota","Desistir sempre"],0],
+["Qual é um benefício da actividade física?",["Melhorar a saúde","Enfraquecer sempre","Impedir o sono","Substituir refeições"],0],
+["Antes de praticar desporto é importante:",["Aquecer","Ficar imóvel","Comer em excesso","Ignorar as regras"],0],
+["Num jogo, devemos respeitar:",["Colegas, árbitro e adversários","Só quem ganha","Ninguém","Apenas o público"],0]]},
+"Educação Musical":{icon:"🎵",q:[
+["Qual destes é um instrumento de percussão?",["Tambor","Flauta","Violino","Trompete"],0],
+["Quantas notas existem na escala musical básica?",["5","6","7","8"],2],
+["Qual destes é um instrumento de cordas?",["Violão","Tambor","Flauta","Apito"],0],
+["O ritmo está relacionado com:",["Organização dos sons no tempo","A cor do papel","O peso do livro","A temperatura"],0],
+["Qual símbolo indica uma pausa na música?",["Sinal de pausa","Ponto de interrogação","Vírgula","Parêntese"],0],
+["A voz humana é usada para:",["Cantar","Pintar","Medir","Desenhar"],0],
+["Qual destes é um instrumento de sopro?",["Flauta","Tambor","Maracas","Pratos"],0],
+["Uma música pode transmitir:",["Emoções e ideias","Apenas números","Apenas medidas","Somente silêncio"],0],
+["O conjunto de pessoas que canta em grupo é um:",["Coro","Público","Desfile","Orquestra de cordas"],0],
+["O som pode ser forte ou fraco; isso chama-se:",["Intensidade","Altura do papel","Textura","Cor"],0]]},
+"Tecnologias de Informação":{icon:"💻",q:[
+["Qual destes é um dispositivo de entrada?",["Teclado","Monitor","Coluna","Impressora"],0],
+["Qual é a função do monitor?",["Mostrar informação","Imprimir folhas","Gravar voz","Mover o cursor"],0],
+["O que é a Internet?",["Rede mundial de computadores","Um teclado","Um tipo de papel","Uma bateria"],0],
+["Qual destes é um programa de edição de texto?",["Word","Calculadora física","Câmara","Lanterna"],0],
+["A palavra-passe deve ser:",["Segura e privada","Partilhada com todos","Igual ao nome público","Escrita em qualquer site"],0],
+["Qual destes é um dispositivo de armazenamento?",["Pen drive","Rato","Monitor","Microfone"],0],
+["O que significa guardar um ficheiro?",["Armazenar o trabalho","Apagar tudo","Desligar o ecrã","Imprimir"],0],
+["Qual é um comportamento seguro online?",["Não partilhar dados pessoais com desconhecidos","Enviar a palavra-passe","Abrir todos os links","Publicar morada"],0],
+["Qual dispositivo move o ponteiro no ecrã?",["Rato","Impressora","Coluna","Projector"],0],
+["O que é um navegador de Internet?",["Programa para visitar páginas web","Um cabo eléctrico","Uma pasta de papel","Um jogo de tabuleiro"],0]]},
+"Agropecuária":{icon:"🌱",q:[
+["A agricultura dedica-se principalmente à:",["Produção de culturas","Construção de carros","Pesca no mar","Fabricação de computadores"],0],
+["Qual ferramenta é usada para cavar a terra?",["Enxada","Régua","Tesoura","Colher"],0],
+["O que as plantas precisam para crescer?",["Água, luz e nutrientes","Plástico e óleo","Areia apenas","Fumo"],0],
+["A criação de galinhas é um exemplo de:",["Avicultura","Silvicultura","Pesca","Mineração"],0],
+["Qual destes é um fertilizante natural?",["Composto orgânico","Plástico","Vidro","Gasolina"],0],
+["A rotação de culturas ajuda a:",["Conservar a fertilidade do solo","Destruir sempre o solo","Impedir a chuva","Eliminar todas as plantas"],0],
+["Qual animal fornece leite?",["Vaca","Galinha","Pato","Peixe"],0],
+["A irrigação consiste em:",["Fornecer água às culturas","Cortar árvores","Colher frutos","Guardar sementes"],0],
+["Qual é uma cultura alimentar?",["Milho","Ferro","Plástico","Areia"],0],
+["A criação de abelhas chama-se:",["Apicultura","Avicultura","Piscicultura","Horticultura"],0]]},
+"Educação Moral e Cívica":{icon:"🤝",q:[
+["O respeito significa:",["Tratar os outros com consideração","Ignorar todos","Insultar colegas","Desobedecer sempre"],0],
+["Qual é um dever do aluno?",["Estudar e respeitar a escola","Danificar carteiras","Faltar sem motivo","Perturbar aulas"],0],
+["A cidadania envolve:",["Direitos e deveres","Apenas direitos","Apenas castigos","Só actividades desportivas"],0],
+["Quando encontramos lixo no chão, devemos:",["Colocá-lo no recipiente adequado","Espalhá-lo","Atirá-lo ao rio","Queimá-lo sempre"],0],
+["A igualdade significa:",["Respeitar todas as pessoas","Favorecer apenas amigos","Excluir colegas","Desrespeitar diferenças"],0],
+["Uma forma de resolver conflitos é:",["Dialogar com respeito","Gritar e ameaçar","Bater","Espalhar rumores"],0],
+["O bem comum é aquilo que:",["Beneficia a comunidade","Serve só uma pessoa","Prejudica todos","Não tem utilidade"],0],
+["Ser responsável é:",["Cumprir os compromissos","Culpar sempre os outros","Ignorar tarefas","Desistir de tudo"],0],
+["A honestidade consiste em:",["Dizer a verdade e agir correctamente","Enganar os outros","Esconder erros sempre","Fazer batota"],0],
+["Uma comunidade é formada por:",["Pessoas que convivem num lugar","Apenas edifícios","Só animais","Somente estradas"],0]]},
+"Francês":{icon:"🇫🇷",q:[
+["Como se diz 'olá' em francês?",["Bonjour","Gracias","Hello","Adiós"],0],
+["O que significa 'merci'?",["Obrigado","Bom dia","Adeus","Por favor"],0],
+["Como se diz 'água' em francês?",["Eau","Pain","Livre","Chat"],0],
+["O que significa 'au revoir'?",["Até à vista","Bom dia","Obrigado","Boa noite"],0],
+["Como se diz 'livro' em francês?",["Livre","Maison","Eau","École"],0],
+["Qual é o número 'trois'?",["2","3","4","5"],1],
+["Como se diz 'mãe' em francês?",["Mère","Père","Frère","Sœur"],0],
+["O que significa 'oui'?",["Sim","Não","Talvez","Adeus"],0],
+["Como se diz 'escola' em francês?",["École","Maison","Chat","Table"],0],
+["O que significa 'chat'?",["Gato","Cão","Casa","Livro"],0]]},
+"Empreendedorismo":{icon:"💡",q:[
+["O que é uma ideia de negócio?",["Uma proposta para oferecer um produto ou serviço","Uma brincadeira sem objectivo","Uma conta de matemática","Um mapa"],0],
+["Antes de iniciar um negócio, é importante:",["Planear","Gastar todo o dinheiro","Ignorar clientes","Não conhecer o produto"],0],
+["Quem compra um produto é o:",["Cliente","Fornecedor","Concorrente","Fabricante"],0],
+["O lucro é, de forma simples:",["Receita menos custos","Custos mais dívidas","Preço sem venda","Dinheiro emprestado"],0],
+["Uma boa equipa deve:",["Colaborar e comunicar","Evitar conversar","Competir entre si sempre","Ignorar tarefas"],0],
+["O orçamento ajuda a:",["Organizar receitas e despesas","Escolher cores apenas","Medir a chuva","Contar alunos"],0],
+["Um produto é:",["Bem que pode ser vendido","Sempre um serviço","Uma pessoa","Uma dívida"],0],
+["A publicidade serve para:",["Informar pessoas sobre uma oferta","Esconder o produto","Aumentar custos sem razão","Impedir vendas"],0],
+["Poupar significa:",["Guardar parte do dinheiro","Gastar tudo","Pedir sempre emprestado","Perder recibos"],0],
+["Um empreendedor procura:",["Resolver problemas com ideias e iniciativa","Evitar qualquer responsabilidade","Copiar sem pensar","Não aprender"],0]]},
+"Geometria":{icon:"📐",q:[
+["Quantos graus tem um ângulo recto?",["45°","90°","180°","360°"],1],
+["Quantos lados tem um pentágono?",["4","5","6","7"],1],
+["Qual é o perímetro de um quadrado de lado 3 cm?",["6 cm","9 cm","12 cm","15 cm"],2],
+["Uma figura com três lados é um:",["Triângulo","Quadrado","Pentágono","Círculo"],0],
+["Quantos lados iguais tem um quadrado?",["2","3","4","5"],2],
+["O diâmetro de um círculo passa pelo:",["Centro","Exterior apenas","Vértice","Lado do quadrado"],0],
+["Quantos vértices tem um rectângulo?",["2","3","4","5"],2],
+["Um ângulo maior que 90° e menor que 180° é:",["Agudo","Obtuso","Recto","Nulo"],1],
+["Qual é a unidade comum para medir área?",["cm²","cm","kg","L"],0],
+["Linhas que nunca se cruzam no mesmo plano são:",["Paralelas","Perpendiculares","Curvas","Oblíquas sempre"],0]]},
+"Estudo do Meio":{icon:"🌿",q:[
+["Qual é uma fonte de água potável?",["Água tratada","Água poluída","Água com lixo","Água salgada sem tratamento"],0],
+["Qual destes é um meio de transporte terrestre?",["Autocarro","Navio","Avião","Barco"],0],
+["O que devemos fazer para poupar água?",["Fechar a torneira quando não usamos","Deixar torneiras abertas","Poluir rios","Lavar passeios sem necessidade"],0],
+["Qual destes é um animal doméstico?",["Gato","Leão selvagem","Tubarão","Crocodilo selvagem"],0],
+["O Sol nasce aproximadamente a:",["Este","Oeste","Norte","Sul"],0],
+["Uma árvore ajuda o ambiente porque:",["Produz oxigénio e oferece abrigo","Produz plástico","Aquece os rios","Elimina toda a água"],0],
+["Qual destes resíduos pode ser reciclado?",["Papel","Fumo","Som","Luz"],0],
+["A família é um grupo de:",["Pessoas ligadas por relações familiares","Apenas colegas de turma","Só professores","Desconhecidos na rua"],0],
+["O semáforo vermelho indica:",["Parar","Avançar depressa","Correr","Estacionar sempre"],0],
+["Manter a escola limpa é responsabilidade:",["De todos","Só do director","Só dos visitantes","De ninguém"],0]]},
+"Saúde e Higiene":{icon:"🧼",q:[
+["Quando devemos lavar as mãos?",["Antes de comer e depois de usar a casa de banho","Só uma vez por mês","Nunca","Apenas ao acordar"],0],
+["Qual é um hábito de higiene oral?",["Escovar os dentes","Partilhar escova","Evitar água","Comer doces sem parar"],0],
+["Uma alimentação equilibrada deve incluir:",["Alimentos variados","Apenas doces","Só refrigerantes","Apenas fritos"],0],
+["A água segura para beber deve ser:",["Potável","Poluída","Com lixo","Desconhecida"],0],
+["O descanso adequado ajuda o corpo a:",["Recuperar energia","Ficar sempre cansado","Deixar de crescer","Evitar aprender"],0],
+["Para proteger a saúde, devemos:",["Manter o ambiente limpo","Deitar lixo nos rios","Partilhar objectos pessoais de higiene","Ignorar feridas"],0],
+["A actividade física regular contribui para:",["Bem-estar e saúde","Doença obrigatória","Falta de energia sempre","Substituir o sono"],0],
+["Quando nos sentimos doentes, devemos:",["Informar um adulto responsável e procurar ajuda de saúde","Tomar qualquer medicamento","Esconder sempre","Ignorar os sintomas"],0],
+["Os alimentos devem ser conservados:",["De forma limpa e adequada","No chão sujo","Ao lado do lixo","Sem protecção"],0],
+["A higiene do ambiente ajuda a:",["Prevenir doenças","Aumentar a poluição","Atrair lixo","Contaminar água"],0]]},
+"Cultura Moçambicana":{icon:"🇲🇿",q:[
+["Qual é a língua oficial de Moçambique?",["Português","Inglês","Francês","Suaíli"],0],
+["Qual é a moeda de Moçambique?",["Metical","Euro","Dólar","Rand"],0],
+["Em que dia se celebra a Independência de Moçambique?",["25 de Junho","25 de Setembro","7 de Abril","1 de Janeiro"],0],
+["Qual é a capital de Moçambique?",["Maputo","Beira","Tete","Lichinga"],0],
+["A marrabenta é conhecida como um género de:",["Música","Pintura","Desporto","Agricultura"],0],
+["Qual oceano banha Moçambique?",["Índico","Atlântico","Pacífico","Árctico"],0],
+["A capulana é tradicionalmente um:",["Tecido","Instrumento de metal","Barco","Alimento"],0],
+["Moçambique situa-se no continente:",["Africano","Europeu","Asiático","Americano"],0],
+["O dia 25 de Setembro está ligado à história das:",["Forças Armadas de Defesa de Moçambique","Férias escolares","Colheitas de milho","Competições de futebol"],0],
+["A diversidade cultural inclui diferentes:",["Línguas, costumes e tradições","Apenas edifícios","Somente estradas","Só moedas"],0]]},
+
+
+};
+let current="",questions=[],index=0,points=0,correct=0,answered=false,soundOn=true;
+const $=id=>document.getElementById(id);
+let stats=loadStats();
+function loadStats(){try{return JSON.parse(localStorage.getItem("smartKidsStats"))||{total:0,rounds:0,best:0,badges:[]}}catch(e){return {total:0,rounds:0,best:0,badges:[]}}}
+function saveStats(){localStorage.setItem("smartKidsStats",JSON.stringify(stats))}
+function show(id){["intro","playScreen","home","quiz","result"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function updateHome(){
+ $("totalPoints").textContent=stats.total;$("rounds").textContent=stats.rounds;$("best").textContent=stats.best+"/50";
+ $("badges").innerHTML=stats.badges.length?stats.badges.map(x=>`<span class="badge">${x}</span>`).join(""):'<span class="sub">Termina um jogo para ganhar a tua primeira medalha!</span>';
+}
+function buildHome(){
+ const box=$("subjects");box.innerHTML="";
+ Object.entries(data).forEach(([name,obj])=>{
+  const b=document.createElement("button");b.className="subject";b.innerHTML=`<span class="emoji">${obj.icon}</span>${name}<small style="display:block;margin-top:5px;color:#61738f">10 perguntas novas</small>`;
+  b.onclick=()=>start(name);box.appendChild(b);
+ });
+ updateHome();
+}
+let audioCtx=null,musicTimer=null,musicStep=0;
+function getAudio(){
+ const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+ if(!AudioContextClass)return null;
+ if(!audioCtx)audioCtx=new AudioContextClass();
+ if(audioCtx.state==="suspended")audioCtx.resume();
+ return audioCtx;
+}
+function beep(freq=660,duration=.16,type="sine",volume=.07,delay=0){
+ if(!soundOn)return;
+ try{
+  const ctx=getAudio();if(!ctx)return;
+  const osc=ctx.createOscillator(),gain=ctx.createGain();
+  osc.type=type;osc.frequency.setValueAtTime(freq,ctx.currentTime+delay);
+  gain.gain.setValueAtTime(.001,ctx.currentTime+delay);
+  gain.gain.exponentialRampToValueAtTime(volume,ctx.currentTime+delay+.02);
+  gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+delay+duration);
+  osc.connect(gain);gain.connect(ctx.destination);
+  osc.start(ctx.currentTime+delay);osc.stop(ctx.currentTime+delay+duration+.03);
+ }catch(e){}
+}
+function tone(ok){
+ if(!soundOn)return;
+ if(ok){beep(523,.13);beep(659,.13,"sine",.07,.14);beep(784,.22,"sine",.07,.28)}
+ else{beep(260,.22,"triangle",.055);beep(190,.25,"triangle",.055,.18)}
+}
+function startMusic(){
+ if(!soundOn||musicTimer)return;
+ const notes=[392,494,587,494,440,523,659,523];
+ musicTimer=setInterval(()=>{
+  if(!soundOn)return;
+  beep(notes[musicStep%notes.length],.32,"sine",.018);
+  musicStep++;
+ },520);
+}
+function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null}}
+function testSound(){
+ soundOn=true;
+ beep(523,.14);beep(659,.14,"sine",.07,.16);beep(784,.24,"sine",.07,.32);
+ startMusic();
+}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function start(name){
+ current=name;questions=shuffle(data[name].q).slice(0,5);index=0;points=0;correct=0;show("quiz");render();
+}
+function render(){
+ const item=questions[index];answered=false;
+ $("subjectName").textContent=data[current].icon+" "+current;$("score").textContent="Pontos: "+points;
+ $("count").textContent=`Pergunta ${index+1}/5`;$("level").textContent="Nível "+(index<2?1:index<4?2:3);
+ $("bar").style.width=(index/5*100)+"%";$("question").textContent=item[0];$("feedback").textContent="";$("next").classList.add("hidden");
+ const area=$("answers");area.innerHTML="";
+ item[1].forEach((answer,i)=>{const b=document.createElement("button");b.className="option";b.textContent=String.fromCharCode(65+i)+") "+answer;b.onclick=()=>choose(i);area.appendChild(b)});
+}
+function choose(choice){
+ if(answered)return;answered=true;if(soundOn)startMusic();const right=questions[index][2];
+ [...$("answers").children].forEach((b,i)=>{b.disabled=true;if(i===right)b.classList.add("correct");else if(i===choice)b.classList.add("wrong")});
+ if(choice===right){points+=10;correct++;$("feedback").textContent="Muito bem! Resposta certa. +10 pontos 🎉";tone(true)}
+ else{$("feedback").textContent="Quase! A resposta certa está destacada a verde. Continua a aprender!";tone(false)}
+ $("score").textContent="Pontos: "+points;$("next").textContent=index===4?"Ver resultado":"Próxima pergunta";$("next").classList.remove("hidden");
+}
+function finish(){
+ $("bar").style.width="100%";stats.total+=points;stats.rounds++;stats.best=Math.max(stats.best,points);
+ let badge=points===50?"🏆 Mestre do Saber":points>=30?"🥇 Excelente estudante":"🌱 Primeiro passo";
+ if(!stats.badges.includes(badge))stats.badges.push(badge);saveStats();
+ $("resultText").textContent=`Terminaste ${current} com ${points} de 50 pontos. ${points>=40?"Excelente trabalho!":points>=20?"Bom esforço! Continua a praticar.":"Continua a estudar e tenta novamente. Cada tentativa ensina algo novo!"}`;
+ $("finalScore").textContent=points;$("correctCount").textContent=correct+"/5";$("newBadge").textContent=badge.split(" ")[0];show("result");buildHome();
+}
+$("enterBtn").onclick=()=>{show("playScreen");beep(523,.12)};
+$("playBtn").onclick=()=>{show("home");buildHome();testSound()};
+$("next").onclick=()=>{index++;if(index<5)render();else finish()};
+$("backHome").onclick=$("resultHome").onclick=()=>{show("home");buildHome()};
+$("again").onclick=()=>start(current);
+$("soundBtn").onclick=()=>{
+ soundOn=!soundOn;
+ $("soundBtn").textContent=soundOn?"🔊 Sons: ligados":"🔇 Sons: desligados";
+ if(soundOn){testSound()}else{stopMusic()}
+};
+
+$("resetBtn").onclick=()=>{if(confirm("Queres mesmo apagar os pontos e as conquistas deste dispositivo?")){stats={total:0,rounds:0,best:0,badges:[]};saveStats();buildHome()}};
+buildHome();show("intro");
+</script>
+</body>
+</html>
